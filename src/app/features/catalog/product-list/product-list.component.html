@@ -1,0 +1,148 @@
+<div class="catalog-page">
+  <!-- Hero Section -->
+  <div class="hero-banner">
+    <div class="banner-content">
+      <h1 class="banner-title">Busca tus productos</h1>
+      
+      <div class="search-box">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 17A8 8 0 1 0 9 1a8 8 0 0 0 0 16zM17 17l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text"
+               placeholder="¿Qué quieres encontrar hoy?"
+               class="search-input"
+               [(ngModel)]="filters.search"
+               (keyup.enter)="onSearch()">
+      </div>
+    </div>
+  </div>
+
+  <!-- Catalog Section -->
+  <div class="catalog-section">
+    <h2 class="catalog-title">Catálogo de productos</h2>
+
+
+    <!-- Grid de Filtros y Productos -->
+    <div class="catalog-content">
+      <!-- Filters Sidebar -->
+      <aside class="filters-sidebar">
+        <div class="filter-group">
+          <label class="filter-label">Tipo de proveedor:</label>
+          <select class="filter-select">
+            <option value="">Proveedor</option>
+            <option value="factory">Fabrica</option>
+            <option value="reseller">Revendedor</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Precio:</label>
+          <div class="range-inputs">
+            <input type="number" class="range-input" placeholder="Min" [(ngModel)]="filters.min_price">
+            <span>-</span>
+            <input type="number" class="range-input" placeholder="Max" [(ngModel)]="filters.max_price">
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Categorías:</label>
+          <select class="filter-select" [(ngModel)]="filters.category_id">
+            <option [ngValue]="undefined">Categorías</option>
+            <option [value]="1">Tecnología</option>
+            <option [value]="2">Hogar</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Ciudad:</label>
+          <select class="filter-select">
+            <option value="">Selecciona una ciudad</option>
+            <option value="bogota">Bogotá</option>
+            <option value="medellin">Medellín</option>
+          </select>
+        </div>
+
+        <button class="apply-filters-btn" (click)="load()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>
+          </svg>
+          Aplicar filtros
+        </button>
+
+      </aside>
+
+      <!-- Products Container -->
+      <div class="products-container">
+        <div class="products-header">
+          <div class="products-count">
+            Mostrando <strong>{{ page?.data?.length || 0 }}</strong> productos
+          </div>
+          <div class="view-controls">
+            <span>Vista:</span>
+            <button class="view-btn active">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor"/>
+                <rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor"/>
+                <rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor"/>
+                <rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor"/>
+              </svg>
+            </button>
+            <button class="view-btn">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="12" height="3" rx="1" stroke="currentColor"/>
+                <rect x="2" y="7" width="12" height="3" rx="1" stroke="currentColor"/>
+                <rect x="2" y="12" width="12" height="3" rx="1" stroke="currentColor"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="products-grid">
+          @if (loading) {
+            <div class="loading-state">Cargando productos...</div>
+          } @else if (error) {
+            <div class="error-state">{{ error }}</div>
+          } @else {
+            @for (product of page?.data; track product.id) {
+              <div class="product-card">
+                <div class="product-image">
+                  <img [src]="product.image || 'https://via.placeholder.com/200x200/cccccc/666666?text=No+Image'" [alt]="product.name">
+                  <button class="favorite-btn">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M10 17l-6-6c-2-2-2-5 0-7s5-2 7 0c2-2 5-2 7 0s2 5 0 7l-6 6z" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                  </button>
+                </div>
+                <div class="product-info">
+                  <h3 class="product-name">{{ product.name }}</h3>
+                  <p class="product-price">{{ product.price | currency }}</p>
+                </div>
+              </div>
+            }
+          }
+        </div>
+
+        <!-- Controles de Paginación -->
+        @if (page) {
+          <div class="pagination-controls">
+            <button class="pagination-btn" (click)="prev()" [disabled]="!page.prev_cursor || loading">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 18l-6-6 6-6"/>
+              </svg>
+              Anterior
+            </button>
+            <span class="pagination-info">
+              Mostrando {{ page.data.length }} productos
+            </span>
+            <button class="pagination-btn" (click)="next()" [disabled]="!page.next_cursor || loading">
+              Siguiente
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
