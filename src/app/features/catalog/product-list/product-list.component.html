@@ -26,14 +26,7 @@
     <div class="catalog-content">
       <!-- Filters Sidebar -->
       <aside class="filters-sidebar">
-        <div class="filter-group">
-          <label class="filter-label">Tipo de proveedor:</label>
-          <select class="filter-select">
-            <option value="">Proveedor</option>
-            <option value="factory">Fabrica</option>
-            <option value="reseller">Revendedor</option>
-          </select>
-        </div>
+        <h3 class="filters-title">Filtros</h3>
 
         <div class="filter-group">
           <label class="filter-label">Precio:</label>
@@ -47,27 +40,33 @@
         <div class="filter-group">
           <label class="filter-label">Categorías:</label>
           <select class="filter-select" [(ngModel)]="filters.category_id">
-            <option [ngValue]="undefined">Categorías</option>
+            <option [ngValue]="undefined">Todas las categorías</option>
             <option [value]="1">Tecnología</option>
             <option [value]="2">Hogar</option>
           </select>
         </div>
 
         <div class="filter-group">
-          <label class="filter-label">Ciudad:</label>
-          <select class="filter-select">
-            <option value="">Selecciona una ciudad</option>
-            <option value="bogota">Bogotá</option>
-            <option value="medellin">Medellín</option>
-          </select>
+          <label class="filter-checkbox">
+            <input type="checkbox" [(ngModel)]="filters.in_stock">
+            <span>Solo productos disponibles</span>
+          </label>
         </div>
 
-        <button class="apply-filters-btn" (click)="load()">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>
-          </svg>
-          Aplicar filtros
-        </button>
+        <div class="filter-actions">
+          <button class="apply-filters-btn" (click)="load()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M1.5 1.5A.5.5 0 0 1 2 1h12.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>
+            </svg>
+            Aplicar filtros
+          </button>
+          <button class="clear-filters-btn" (click)="clearFilters()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+            </svg>
+            Limpiar filtros
+          </button>
+        </div>
 
       </aside>
 
@@ -77,23 +76,18 @@
           <div class="products-count">
             Mostrando <strong>{{ page?.data?.length || 0 }}</strong> productos
           </div>
-          <div class="view-controls">
-            <span>Vista:</span>
-            <button class="view-btn active">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor"/>
-                <rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor"/>
-                <rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor"/>
-                <rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor"/>
-              </svg>
-            </button>
-            <button class="view-btn">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="2" y="2" width="12" height="3" rx="1" stroke="currentColor"/>
-                <rect x="2" y="7" width="12" height="3" rx="1" stroke="currentColor"/>
-                <rect x="2" y="12" width="12" height="3" rx="1" stroke="currentColor"/>
-              </svg>
-            </button>
+          <div class="sort-controls">
+            <label for="sort-select">Ordenar por:</label>
+            <select id="sort-select" class="sort-select" [(ngModel)]="filters.sort_by" (change)="onSortChange()">
+              <option value="id">Predeterminado</option>
+              <option value="price">Precio: Menor a Mayor</option>
+              <option value="name">Nombre: A-Z</option>
+              <option value="created_at">Más recientes</option>
+            </select>
+            <select class="sort-dir-select" [(ngModel)]="filters.sort_dir" (change)="onSortChange()">
+              <option value="asc">↑</option>
+              <option value="desc">↓</option>
+            </select>
           </div>
         </div>
 
