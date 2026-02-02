@@ -11,4 +11,9 @@ export interface Product {
   created_at: string;
   updated_at: string;
   image?: string;
+  category?: {
+    id: number;
+    name: string;
+    slug: string;
+  };
 }

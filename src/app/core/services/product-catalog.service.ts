@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { retry, map, catchError } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { CursorPage } from '../models/cursor-page';
@@ -60,5 +61,21 @@ export class ProductCatalogService {
       ...filters,
       cursor: current.prev_cursor,
     });
+  }
+
+  getProductById(id: string | number): Observable<Product> {
+    const url = `${environment.apiUrl}/products/${id}`;
+    return this.http.get<{ success: boolean; data: Product }>(url).pipe(
+      retry({
+        count: 2,
+        delay: 1000,
+        resetOnSuccess: true
+      }),
+      map(response => response.data),
+      catchError((error: any) => {
+        console.error('Error fetching product:', error);
+        throw error;
+      })
+    );
   }
 }
