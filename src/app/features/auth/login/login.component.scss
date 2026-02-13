@@ -1,0 +1,189 @@
+//Variables
+$primary-orange: #f39c12;
+$primary-blue: #5bc0de;
+$text-color: #333;
+$text-muted: #777;
+$border-color: #ccc;
+$error-color: #e74c3c;
+$white: #ffffff;
+
+//Container
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: $primary-orange;
+  background-image: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 20%),
+                    radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 20%);
+  padding: 20px;
+}
+
+//Card
+.login-card {
+  background-color: $white;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px; // A bit narrower than register if desired, or same
+  text-align: center;
+  margin-bottom: 20px;
+
+  .login-header {
+    margin-bottom: 30px;
+
+    .logo {
+      margin-bottom: 15px;
+      h1 {
+        font-family: sans-serif;
+        font-weight: bold;
+        color: $text-color;
+        margin: 0;
+        font-size: 2.5rem;
+      }
+    }
+
+    h2 {
+      color: $primary-blue;
+      margin-bottom: 10px;
+      font-size: 1.5rem;
+    }
+
+    p {
+      color: $text-muted;
+      font-size: 0.9rem;
+    }
+  }
+
+  //Form
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .form-group {
+      text-align: left;
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+        color: #555;
+        font-weight: 500;
+      }
+
+      .input-wrapper {
+        position: relative;
+        
+        input {
+          width: 100%;
+          padding: 12px 15px;
+          border: 1px solid $border-color;
+          border-radius: 4px;
+          font-size: 1rem;
+          transition: border-color 0.3s;
+          box-sizing: border-box;
+  
+          &:focus {
+            outline: none;
+            border-color: $primary-blue;
+          }
+  
+          &.error {
+            border-color: $error-color;
+          }
+  
+          &::placeholder {
+             color: #aaa;
+          }
+        }
+      }
+
+      .error-message {
+        margin-top: 5px;
+        color: $error-color;
+        font-size: 0.8rem;
+      }
+    }
+
+    .form-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.85rem;
+        margin-top: 5px;
+        margin-bottom: 10px;
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            color: $text-muted;
+            cursor: pointer;
+
+            input {
+                margin-right: 5px;
+            }
+        }
+
+        .forgot-password {
+            color: $text-muted;
+            text-decoration: none;
+            
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    button {
+      background-color: $primary-blue;
+      color: $white;
+      border: none;
+      padding: 12px;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 100%; 
+
+      &:hover {
+        background-color: darken($primary-blue, 10%);
+      }
+
+      &:disabled {
+        background-color: lighten($primary-blue, 20%);
+        cursor: not-allowed;
+      }
+    }
+
+    .login-footer {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: $text-muted;
+
+      a {
+        color: $primary-blue;
+        text-decoration: none;
+        font-weight: bold;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+//Page Footer
+.page-footer {
+    text-align: center;
+    color: white;
+    font-size: 0.8rem;
+    
+    p {
+        margin: 5px 0;
+    }
+}
